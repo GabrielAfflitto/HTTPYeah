@@ -1,50 +1,64 @@
 require 'socket'
 require 'pry'
+require './lib/request_hash'
 
 class Request
-  attr_reader :tcp_server, :client, :request_lines
+  attr_reader :tcp_server, :request_lines
   def initialize
     @tcp_server = TCPServer.new(9292)
-    @client = tcp_server.accept
+    @parser = RequestHash.new
     @request_lines = []
   end
 
-  def stream
-    puts "Ready for a request"
-    while line = client.gets and !line.chomp.empty?
-      request_lines << line.chomp
+  def accept_client
+    tcp_server.accept
+  end
+
+
+  def request_loop
+    hello_count = 0
+
+    loop do
+      client = tcp_server.accept
+
+      request_lines = []
+      while line = client.gets and !line.chomp.empty?
+        request_lines << line.chomp
+      end
+      @parser.request_lines_select(request_lines)
+
+      if @parser.path == "/hello"
+        response = "Hello World!(#{hello_count})\n"
+      elsif @parser.path == "/"
+        response = "iteration 1 diagsnostic"
+      else
+        binding.pry
+        puts response
+      end
+
+
+      client.print "HTTP/1.1 200 OK\r\n" +
+                   "Content-Type: text/plain\r\n" +
+                   "Content-Length: #{response.bytesize}\r\n" +
+                   "Connection: close\r\n"
+      client.print "\r\n"
+      client.print response
+      hello_count += 1
+      client.close
     end
-    binding.pry
   end
 
-  def request
-    puts "Got this request:"
-    puts request_lines.inspect
-  end
 
-  def response
-    puts "Sending response."
-    response = "<pre>" + request_lines.join("\n") + "</pre>"
-    output = "<html><head></head><body>#{response}</body></html>"
-    headers = ["http/1.1 200 ok",
-          "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-          "server: ruby",
-          "content-type: text/html; charset=iso-8859-1",
-          "content-length: #{output.length}\r\n\r\n"].join("\r\n")
-    client.puts headers
-    client.puts output
-  end
-
-  def close_server(headers, output)
-    puts ["Wrote this response:", headers, output].join("\n")
-    client.close
-    puts "\nResponse complete, exiting."
-  end
 end
 
-request = Request.new
 
-request.stream
-request.request
-request.response
-request.close_server(headers, output)
+if __FILE__ == $0
+  request = Request.new
+  request.request_loop
+end
+
+=begin
+  "<html>" +
+  "<headers>" +
+
+=end
