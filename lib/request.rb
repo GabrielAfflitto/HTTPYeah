@@ -3,11 +3,10 @@ require 'pry'
 require './lib/request_hash'
 
 class Request
-  attr_reader :tcp_server, :request_lines
+  attr_reader :tcp_server
   def initialize
     @tcp_server = TCPServer.new(9292)
-    @parser = RequestHash.new
-    @request_lines = []
+    @parser = RequestHash.new(request_lines)
   end
 
   def accept_client
@@ -25,14 +24,15 @@ class Request
       while line = client.gets and !line.chomp.empty?
         request_lines << line.chomp
       end
-      @parser.request_lines_select(request_lines)
+
+      @parser.root
 
       if @parser.path == "/hello"
         response = "Hello World!(#{hello_count})\n"
       elsif @parser.path == "/"
-        response = "iteration 1 diagsnostic"
+        response = @parser.root
       else
-        binding.pry
+        # binding.pry
         puts response
       end
 
