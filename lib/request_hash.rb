@@ -1,7 +1,7 @@
 require 'pry'
 class RequestHash
   attr_reader :request_root, :request_lines
-  def initialize
+  def initialize(request_lines)
     @request_lines = request_lines
     # binding.pry
     @request_root = []
@@ -26,7 +26,7 @@ class RequestHash
     request_root << "Accept: #{accept}"
   end
 
-  def split_first_item_request_lines(request_lines)
+  def split_first_item_request_lines
     request_lines[0].split
     # when recieving arguments where a method is
     # DEFINED, all argument names act like local variables
@@ -35,7 +35,8 @@ class RequestHash
   end
 
   def verb
-    split_first_item_request_lines(request_lines)[0]
+    # binding.pry
+    split_first_item_request_lines[0]
   end
 
   def path
