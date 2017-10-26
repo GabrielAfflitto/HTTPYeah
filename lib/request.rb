@@ -24,7 +24,7 @@ class Request
       while line = client.gets and !line.chomp.empty?
         request_lines << line.chomp
       end
-      @parser = RequestHash.new(request_lines)
+      @parser = RequestRoot.new(request_lines)
 
       # @parser.root
 
