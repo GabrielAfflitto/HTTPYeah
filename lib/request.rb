@@ -1,18 +1,13 @@
 require 'socket'
 require 'date'
 require 'pry'
-require './lib/request_hash'
+require './lib/request_root'
 
 class Request
   attr_reader :tcp_server
   def initialize
     @tcp_server = TCPServer.new(9292)
   end
-
-  def accept_client
-    tcp_server.accept
-  end
-
 
   def request_loop
     hello_count = 0
@@ -26,7 +21,10 @@ class Request
       end
       @parser = RequestRoot.new(request_lines)
 
-      # @parser.root
+      request_count = 0
+      unless @parser.path == "/favicon.ico"
+        request_count += 1
+      end
 
       if @parser.path == "/hello"
         response = "Hello World!(#{hello_count})\n"
@@ -34,12 +32,13 @@ class Request
         response = @parser.root
       elsif @parser.path == "/datetime"
         response = "#{Time.now.strftime('%H:%M%p on %A, %B %e, %Y')}"
+      elsif @parser.path == "/shutdown"
+        response = "Total Requests: #{request_count}"
       else
-        response = "dd"
+        response = @parser.root
         puts response
         # binding.pry
       end
-
 
       client.print "HTTP/1.1 200 OK\r\n" +
                    "Content-Type: text/plain\r\n" +
@@ -51,17 +50,12 @@ class Request
       client.close
     end
   end
-
-
 end
 
 
 if __FILE__ == $0
   request = Request.new
   request.request_loop
-  if @parser.path == "/"
-    puts @parser.root
-  end
 end
 
 =begin
