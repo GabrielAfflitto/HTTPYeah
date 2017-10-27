@@ -2,11 +2,13 @@ require 'socket'
 require 'date'
 require 'pry'
 require './lib/request_root'
+require './lib/word_search'
 
 class Request
-  attr_reader :tcp_server
+  attr_reader :tcp_server, :word_search
   def initialize
     @tcp_server = TCPServer.new(9292)
+    @word_search = WordSearch.new("/word_search?word=car")
   end
 
   def request_loop
@@ -34,6 +36,8 @@ class Request
         response = "#{Time.now.strftime('%H:%M%p on %A, %B %e, %Y')}"
       elsif @parser.path == "/shutdown"
         response = "Total Requests: #{request_count}"
+      elsif @parser.path == "/word_search"
+        response = word_search.find_word
       else
         response = @parser.root
         puts response
