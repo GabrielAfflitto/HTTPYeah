@@ -1,21 +1,21 @@
 
 class WordSearch
-  attr_reader :dictionary, :path
-  def initialize(path)
+  attr_reader :dictionary
+  def initialize
     @dictionary = File.read('/usr/share/dict/words')
-    @path = path
+    # @path = path
   end
 
-  def sample_word
-    path.split("=")[1]
-  end
+  # def sample_word
+  #   path.split("=")[1]
+  # end
 
-  def find_word
-    # word = path.split("=")[1]
+  def find_word(path)
+    sample_word = path.split("=")[1]
     if dictionary.include?(sample_word)
-      "#{sample_word} is a known word"
+      "#{sample_word.upcase} is a known word"
     else
-      "#{sample_word} is not a known word"
+      "#{sample_word.upcase} is not a known word"
     end
   end
 

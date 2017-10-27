@@ -8,7 +8,6 @@ class Request
   attr_reader :tcp_server, :word_search
   def initialize
     @tcp_server = TCPServer.new(9292)
-    @word_search = WordSearch.new("/word_search?word=car")
   end
 
   def request_loop
@@ -36,8 +35,16 @@ class Request
         response = "#{Time.now.strftime('%H:%M%p on %A, %B %e, %Y')}"
       elsif @parser.path == "/shutdown"
         response = "Total Requests: #{request_count}"
-      elsif @parser.path == "/word_search"
-        response = word_search.find_word
+      elsif @parser.path.include?("/word_search")
+        word_search = WordSearch.new
+        # binding.pry
+        response = word_search.find_word(@parser.path)
+      elsif @parser.path == "/start_game" && @parser.verb == "POST"
+        # response = start_game
+      elsif @parser.path == "/game" && @parser.verb == "POST" && game_status == "Started"
+        # response = play_game
+      elsif @parser.path == "/game" && @parser.verb == "GET"
+        # response_code == "200 OK" and game.report
       else
         response = @parser.root
         puts response

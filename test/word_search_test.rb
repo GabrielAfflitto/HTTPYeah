@@ -5,36 +5,34 @@ require 'pry'
 
 class WordSeachTest < Minitest::Test
   def test_it_exists
-    ws = WordSearch.new("/word_search?word=car")
+    ws = WordSearch.new
 
     assert_instance_of WordSearch, ws
   end
 
   def test_whole_dictionary_is_populated
-    ws = WordSearch.new("/word_search?word=car")
+    ws = WordSearch.new
     length = File.read('/usr/share/dict/words').length
 
     assert_equal length, ws.dictionary.length
   end
 
-  def test_for_sample_word
-    ws = WordSearch.new("/word_search?word=car")
-
-    assert_equal "car", ws.sample_word
-  end
+  # def test_for_sample_word
+  #   ws = WordSearch.new
+  #
+  #   assert_equal "car", ws.sample_word("/word_search?word=car")
+  # end
 
   def test_it_can_find_a_valid_dictionary_word
-    ws = WordSearch.new("/word_search?word=car")
+    ws = WordSearch.new
 
-    assert_equal "car is a known word", ws.find_word
+    assert_equal "CAR is a known word", ws.find_word("/word_search?word=car")
   end
 
   def test_it_cannot_find_an_invalid_word
-    ws = WordSearch.new("/word_search?word=california")
+    ws = WordSearch.new
 
-    assert_equal "california is not a known word", ws.find_word
+    assert_equal "CALIFORNIA is not a known word", ws.find_word("/word_search?word=california")
   end
-
-
 
 end
