@@ -21,7 +21,7 @@ class Request
         request_lines << line.chomp
       end
       @parser = RequestRoot.new(request_lines)
-
+      # binding.pry
       request_count = 0
       unless @parser.path == "/favicon.ico"
         request_count += 1
@@ -36,8 +36,8 @@ class Request
       elsif @parser.path == "/shutdown"
         response = "Total Requests: #{request_count}"
       elsif @parser.path.include?("/word_search")
+        binding.pry
         word_search = WordSearch.new
-        # binding.pry
         response = word_search.find_word(@parser.path)
       elsif @parser.path == "/start_game" && @parser.verb == "POST"
         # response = start_game
