@@ -30,13 +30,13 @@ class Request
       if @parser.path == "/hello"
         response = "Hello World!(#{hello_count})\n"
       elsif @parser.path == "/"
-        response = @parser.root
+        response = @parser.params
       elsif @parser.path == "/datetime"
         response = "#{Time.now.strftime('%H:%M%p on %A, %B %e, %Y')}"
       elsif @parser.path == "/shutdown"
         response = "Total Requests: #{request_count}"
       elsif @parser.path.include?("/word_search")
-        binding.pry
+        # binding.pry
         word_search = WordSearch.new
         response = word_search.find_word(@parser.path)
       elsif @parser.path == "/start_game" && @parser.verb == "POST"
@@ -46,7 +46,7 @@ class Request
       elsif @parser.path == "/game" && @parser.verb == "GET"
         # response_code == "200 OK" and game.report
       else
-        response = @parser.root
+        response = @parser.params
         puts response
         # binding.pry
       end
@@ -68,9 +68,3 @@ if __FILE__ == $0
   request = Request.new
   request.request_loop
 end
-
-=begin
-  "<html>" +
-  "<headers>" +
-
-=end

@@ -7,20 +7,18 @@ class RequestRoot
     @request_root = {}
   end
 
+
+
   def params
-
-  end
-
-
-  def root_format
-    request_root["Verb:"] = "#{verb}"
-    request_root["Path:"] = "#{path}"
-    request_root["Protocol:"] = "#{protocol}"
-    request_root["Host:"] = "#{host}"
-    request_root["Port:"] = "#{port}"
-    request_root["Origin:"] = "#{host}"
-    request_root["Accept:"] = "#{accept}"
-    request_root
+    "<pre>
+Verb: #{verb}
+Path: #{path}
+Protocol: #{protocol}
+Host: #{host}
+Port: #{port}
+Origin: #{host}
+Accept: #{accept}
+</pre>"
   end
 
   def split_first_item_request_lines
@@ -39,7 +37,7 @@ class RequestRoot
 
   def protocol
     item = split_first_item_request_lines[2]
-    request_root["Protocol"] = item
+    request_root["Protocol:"] = item
   end
 
   def split_second_item_request_lines
