@@ -34,12 +34,16 @@ class GameTest < Minitest::Test
 
   def test_that_report_gives_us_the_correct_information_about_the_guess
     game = Game.new
-    
-    game.guess_tracker("/game?guess=13")
-    game.guess_tracker("/game?guess=11")
+    # binding.pry
+    game.answer = 43
+    game.guesses << game.guess("/game?guess=13")
+    assert_equal "Your last guess was 13, Your guess was too low.", game.report
 
-    assert_equal "", game.report
-    assert_equal "", game.report
+    game.guesses << game.guess("/game?guess=90")
+    assert_equal "Your last guess was 90, Your guess was too high", game.report
+
+    game.guesses << game.guess("/game?guess=43")
+    assert_equal "Your last guess was 43, You are correct!", game.report
   end
 
 
