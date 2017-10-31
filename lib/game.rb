@@ -1,22 +1,18 @@
 
 class Game
-  attr_reader :guess, :guess_counter, :answer
+  attr_reader :answer, :path, :guesses
   def initialize
     @answer = rand(100)
-    @guess_counter = 0
-    @guess = []
-    binding.pry
+    @guesses = []
+    @path = path
   end
 
-
-
-  def guess_tracker(guess)
-    guess_counter += 1
-    guess << guess.to_i
+  def guess(path)
+    path.split("=")[1]
   end
 
-  def last_guess
-    guess[-1].to_i
+  def report
+    last_guess = guesses.last
   end
 
 end

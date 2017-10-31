@@ -1,6 +1,7 @@
 require 'pry'
 class RequestRoot
-  attr_reader :request_root, :request_lines
+  attr_accessor :request_root
+  attr_reader :request_lines
   def initialize(request_lines)
     @request_lines = request_lines
     # binding.pry

@@ -3,6 +3,7 @@ require 'date'
 require 'pry'
 require './lib/request_root'
 require './lib/word_search'
+require './lib/game'
 
 class Request
   attr_reader :tcp_server, :word_search
@@ -39,12 +40,15 @@ class Request
         # binding.pry
         word_search = WordSearch.new
         response = word_search.find_word(@parser.path)
-      elsif @parser.path == "/start_game" && @parser.verb == "POST"
-        # response = start_game
+      elsif @parser.path == "/start_game"
+        @parser.request_root["Verb:"] = "POST"
+        game = Game.new
+        response = "Good luck!"
       elsif @parser.path == "/game" && @parser.verb == "POST" && game_status == "Started"
-        # response = play_game
+        game = Game.new
       elsif @parser.path == "/game" && @parser.verb == "GET"
-        # response_code == "200 OK" and game.report
+        game = Game.new
+        response = "There have been #{game.guesses.count} guesses taken. Your last guess was #{game.guesses.last}, #{guess_status}"
       else
         response = @parser.params
         puts response
@@ -60,6 +64,12 @@ class Request
       hello_count += 1
       client.close
     end
+
+    # def start_game
+    #   game = Game.new
+    #   puts "Good luck!"
+    #   game.message
+    # end
   end
 end
 
