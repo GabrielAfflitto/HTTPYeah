@@ -41,14 +41,16 @@ class Request
         word_search = WordSearch.new
         response = word_search.find_word(@parser.path)
       elsif @parser.path == "/start_game"
-        @parser.request_root["Verb:"] = "POST"
+        @parser.request_root[:Verb] = "POST"
+        binding.pry
         game = Game.new
         response = "Good luck!"
-      elsif @parser.path == "/game" && @parser.verb == "POST" && game_status == "Started"
+      elsif @parser.path.include?("/game") && @parser.verb == "POST"
         game = Game.new
+        response = game.guess_tracker(@parser.path)
       elsif @parser.path == "/game" && @parser.verb == "GET"
         game = Game.new
-        response = "There have been #{game.guesses.count} guesses taken. Your last guess was #{game.guesses.last}, #{guess_status}"
+        response = game.report
       else
         response = @parser.params
         puts response

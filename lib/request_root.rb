@@ -4,8 +4,8 @@ class RequestRoot
   attr_reader :request_lines
   def initialize(request_lines)
     @request_lines = request_lines
-    # binding.pry
     @request_root = {}
+    # binding.pry
   end
 
 
@@ -20,6 +20,7 @@ Port: #{port}
 Origin: #{host}
 Accept: #{accept}
 </pre>"
+# binding.pry
   end
 
   def split_first_item_request_lines
@@ -28,17 +29,17 @@ Accept: #{accept}
 
   def verb
     item = split_first_item_request_lines[0]
-    request_root["Verb:"] = item
+    request_root[:Verb] = item
   end
 
   def path
     item = split_first_item_request_lines[1]
-    request_root["Path:"] = item
+    request_root[:Path] = item
   end
 
   def protocol
     item = split_first_item_request_lines[2]
-    request_root["Protocol:"] = item
+    request_root[:Protocol] = item
   end
 
   def split_second_item_request_lines
@@ -47,17 +48,17 @@ Accept: #{accept}
 
   def host
     item = split_second_item_request_lines[1].split(":")[0]
-    request_root["Host:"] = item
+    request_root[:Host] = item
   end
 
   def port
     item = split_second_item_request_lines[1].split(":")[1]
-    request_root["Port:"] = item
+    request_root[:Port] = item
   end
 
   def accept
     item = request_lines[6].split(": ")[1]
-    request_root["Accept:"] = item
+    request_root[:Accept] = item
   end
 
 end

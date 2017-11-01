@@ -17,12 +17,6 @@ class WordSeachTest < Minitest::Test
     assert_equal length, ws.dictionary.length
   end
 
-  # def test_for_sample_word
-  #   ws = WordSearch.new
-  #
-  #   assert_equal "car", ws.sample_word("/word_search?word=car")
-  # end
-
   def test_it_can_find_a_valid_dictionary_word
     ws = WordSearch.new
 

@@ -9,11 +9,11 @@ class GameTest < Minitest::Test
     assert_instance_of Game, game
   end
 
-  # def test_that_it_can_take_a_guess
-  #   game = Game.new
-  #
-  #   assert_equal "13", game.guess("/game?guess=13")
-  # end
+  def test_that_guess_tracker_evaluates_the_guesses
+    game = Game.new
+    game.answer = 55
+    assert_equal "Too low", game.guess_tracker("/game?guess=13")
+  end
 
   def test_that_guess_tracker_can_store_all_guesses
     game = Game.new
@@ -32,7 +32,7 @@ class GameTest < Minitest::Test
     assert_equal 2, game.guesses.count
   end
 
-  def test_that_report_gives_us_the_correct_information_about_the_guess
+  def test_that_report_returns_the_correct_information_about_the_guess
     game = Game.new
     # binding.pry
     game.answer = 43
@@ -46,6 +46,11 @@ class GameTest < Minitest::Test
     assert_equal "Your last guess was 43, You are correct!", game.report
   end
 
+  def test_guess_checker_will_return_correct_information_about_guess
+    game = Game.new
+    game.answer = 67
 
+    assert_equal "Your guess was too low.", game.guess_checker("55")
+  end
 
 end

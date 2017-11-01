@@ -1,15 +1,25 @@
 
 class Game
-  attr_reader :path, :guesses
+  attr_reader :guesses
   attr_accessor :answer
   def initialize
     @answer = rand(100)
     @guesses = []
-    @path = path
   end
 
   def guess(path)
     path.split("=")[1]
+  end
+
+  def guess_tracker(path)
+    guess = path.split("=")[1]
+    if guess.to_i == answer
+      "Correct"
+    elsif guess.to_i < answer
+      "Too low"
+    else
+      "Too high"
+    end
   end
 
   def report
