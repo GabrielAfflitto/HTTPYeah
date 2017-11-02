@@ -5,7 +5,6 @@ class RequestRoot
   def initialize(request_lines)
     @request_lines = request_lines
     @request_root = {}
-    # binding.pry
   end
 
 
@@ -20,7 +19,6 @@ Port: #{port}
 Origin: #{host}
 Accept: #{accept}
 </pre>"
-# binding.pry
   end
 
   def split_first_item_request_lines

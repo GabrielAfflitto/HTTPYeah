@@ -3,22 +3,24 @@ class Game
   attr_reader :guesses
   attr_accessor :answer
   def initialize
-    @answer = rand(100)
+    @answer = rand(1..100)
     @guesses = []
   end
 
-  def guess(path)
-    path.split("=")[1]
-  end
+  # def guess(path)
+  #   path.split("=")[1]
+  # end
 
-  def guess_tracker(path)
-    guess = path.split("=")[1]
-    if guess.to_i == answer
+
+
+  def guess_tracker(guess)
+    guesses << guess
+    if guess == answer
       "Correct"
-    elsif guess.to_i < answer
-      "Too low"
-    else
-      "Too high"
+    elsif guess < answer
+      "Your guess was too low."
+    elsif guess > answer
+      "Your guess was too high."
     end
   end
 
@@ -32,9 +34,9 @@ class Game
   end
 
   def guess_checker(last_guess)
-    if last_guess.to_i == answer
+    if last_guess == answer
       "You are correct!"
-    elsif last_guess.to_i < answer
+    elsif last_guess < answer
       "Your guess was too low."
     else
       "Your guess was too high"

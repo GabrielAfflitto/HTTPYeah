@@ -12,7 +12,7 @@ class GameTest < Minitest::Test
   def test_that_guess_tracker_evaluates_the_guesses
     game = Game.new
     game.answer = 55
-    assert_equal "Too low", game.guess_tracker("/game?guess=13")
+    assert_equal "Your guess was too low.", game.guess_tracker("/game?guess=13")
   end
 
   def test_that_guess_tracker_can_store_all_guesses
