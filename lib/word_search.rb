@@ -3,12 +3,7 @@ class WordSearch
   attr_reader :dictionary
   def initialize
     @dictionary = File.read('/usr/share/dict/words')
-    # @path = path
   end
-
-  # def sample_word
-  #   path.split("=")[1]
-  # end
 
   def find_word(path)
     sample_word = path.split("=")[1]

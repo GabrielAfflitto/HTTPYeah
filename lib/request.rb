@@ -3,7 +3,6 @@ require 'date'
 require 'pry'
 require './lib/request_root'
 require './lib/word_search'
-require './lib/request_body'
 require './lib/game'
 
 class Request
@@ -22,13 +21,8 @@ class Request
       while line = client.gets and !line.chomp.empty?
         request_lines << line.chomp
       end
-      # "------WebKitFormBoundaryEAkDWlyInxGLj7iN--\r\n"
 
       headers = RequestRoot.new(request_lines)
-
-
-
-      # body = RequestBody.new(request_lines)
 
       request_count = 0
       unless headers.path == "/favicon.ico"
@@ -44,7 +38,6 @@ class Request
       elsif headers.path == "/shutdown"
         response = "Total Requests: #{request_count}"
       elsif headers.path.include?("/word_search")
-        # binding.pry
         word_search = WordSearch.new
         response = word_search.find_word(headers.path)
       elsif headers.path == "/start_game" && headers.verb == "POST"
@@ -55,16 +48,13 @@ class Request
         while ( line = client.gets and !line.include?("--\r\n") )
           request_lines << line.chomp
         end
-        # @game.guesses << request_lines.last
         response = @game.guess_tracker(request_lines.last.to_i)
       elsif headers.path == "/game" && headers.verb == "GET"
 
-        # game = Game.new
         response = @game.report
       else
         response = headers.params
         puts response
-        # binding.pry
       end
 
       client.print "HTTP/1.1 200 OK\r\n" +
@@ -76,12 +66,6 @@ class Request
       hello_count += 1
       client.close
     end
-
-    # def start_game
-    #   game = Game.new
-    #   puts "Good luck!"
-    #   game.message
-    # end
   end
 end
 

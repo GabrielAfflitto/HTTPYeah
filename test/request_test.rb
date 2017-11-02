@@ -11,7 +11,6 @@ class RequestTest < Minitest::Test
   end
 
   def test_for_headers
-    # request = Request.new
     response = Faraday.get 'http://127.0.0.1:9292/'
 
     assert_equal "Hello World!(0)", response.body

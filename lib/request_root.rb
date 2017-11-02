@@ -7,8 +7,6 @@ class RequestRoot
     @request_root = {}
   end
 
-
-
   def params
     "<pre>
 Verb: #{verb}

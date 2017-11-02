@@ -7,12 +7,6 @@ class Game
     @guesses = []
   end
 
-  # def guess(path)
-  #   path.split("=")[1]
-  # end
-
-
-
   def guess_tracker(guess)
     guesses << guess
     if guess == answer
